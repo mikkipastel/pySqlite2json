@@ -106,6 +106,10 @@ def query_busline(c):
 
   str_busline_json = str()
   str_stoplist_json = str()
+  
+  # open file
+  f = codecs.open('busline.json', 'wb', "UTF-8")
+  f.write(u'{"busline" : {" ')
 
   # find busstop for each busline
   for row in c.execute(busline_select):
@@ -155,12 +159,17 @@ def query_busline(c):
     if (i < len(list_busline_id) - 1):
       str_busline_json += ','
 
+    f.write(str_busline_json)
+    str_busline_json = str()
+
   # write json
   #with open('busline.json', 'w') as outfile:  
   #  json.dump({'"busline" : {" + str_busline_json + "}'}, outfile)
 
-  f = codecs.open('busline.json', 'wb', "UTF-8")
-  f.write(u'{"busline" : {" + str_busstop_json + "}}')
+  #f = codecs.open('busline.json', 'wb', "UTF-8")
+  #f.write(u'{"busline" : {" + str_busstop_json + "}}')
+  
+  f.write(u'"}}')
   f.close()
 
   print("Finish Generate sqlite to json : busline")
@@ -170,5 +179,5 @@ if __name__ == '__main__':
   conn = sqlite3.connect('buslinebysukhum.sqlite')
   c = conn.cursor()
 
-  query_busstop(c)
+  #query_busstop(c)
   query_busline(c)
